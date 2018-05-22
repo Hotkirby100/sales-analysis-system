@@ -23,5 +23,17 @@ public class PostalCode {
 		return pCode;
 		
 	}
+	
+	public boolean validateCode(String nCode) {
+		
+		if (nCode.equals(pCode)) {
+			
+			return true;
+			
+		}
+		
+		return false;
+		
+	}
 
 }
