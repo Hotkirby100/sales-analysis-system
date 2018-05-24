@@ -6,16 +6,16 @@ public class Customer {
 	private String lName;
 	private String city;
 	private String pCode;
-	private int ccn;
+	private long ccn;
 	private int id;
 
-	public Customer(String first, String last, String place, String postal, String credit, int num) {
+	public Customer(String first, String last, String place, String postal, long credit, int num) {
 
 		fName = first;
 		lName = last;
 		city = place;
 		pCode = postal;
-		ccn = Integer.parseInt(credit);
+		ccn = credit;
 		id = num;
 
 	}
@@ -38,7 +38,7 @@ public class Customer {
 		
 	}
 	
-	public int getCredit() {
+	public long getCredit() {
 		
 		return ccn;
 		
