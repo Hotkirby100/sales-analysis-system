@@ -11,6 +11,7 @@ public class Driver {
 
 		ArrayList<Customer> customers = new ArrayList<>();
 		ArrayList<PostalCode> postalCodes = new ArrayList<>();
+		ArrayList<Sale> sales = new ArrayList<>();
 		loadCodes(postalCodes);
 
 		Scanner in = new Scanner(System.in);
@@ -33,6 +34,10 @@ public class Driver {
 
 				generateCustomerFile(customers);
 
+			} else if (uchoice.equals("3")) {
+				
+				inputSales(sales);
+				
 			} else if (uchoice.equals("4")) {
 
 			} else if (uchoice.equals("5")) {
@@ -48,6 +53,34 @@ public class Driver {
 
 	}
 
+	private static void inputSales(ArrayList<Sale> sales) {
+		
+		File pFile = new File("sales.csv");
+
+		try {
+
+			Scanner in = new Scanner(pFile);
+			String data[];
+			String hold;
+
+			in.nextLine();
+
+			while (in.hasNextLine()) {
+
+				hold = in.nextLine();
+				data = hold.split(",");
+				sales.add(new Sale(data[0],Long.parseLong(data[1])));
+
+			}
+			System.out.println("Sucessfully loaded sales file.");
+
+		} catch (FileNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		
+	}
+
 	private static void generateCustomerFile(ArrayList<Customer> customers) {
 
 		Scanner in = new Scanner(System.in);
@@ -61,15 +94,15 @@ public class Driver {
 
 			FileWriter out = new FileWriter(outFile);
 			BufferedWriter writeFile = new BufferedWriter(out);
-			
 
 			for (int i = 0; i < customers.size(); i++) {
 
-				writeFile.write(customers.get(i).getID() + "," + customers.get(i).getName() + "," + customers.get(i).getCity()
-						+ "," + customers.get(i).getCode() + "," + customers.get(i).getCredit());
+				writeFile.write(
+						customers.get(i).getID() + "," + customers.get(i).getName() + "," + customers.get(i).getCity()
+								+ "," + customers.get(i).getCode() + "," + customers.get(i).getCredit());
 				writeFile.newLine();
 			}
-			
+
 			writeFile.close();
 			System.out.println("Sucessfully wrote to file!");
 
@@ -110,49 +143,55 @@ public class Driver {
 
 	private static void newCustomer(ArrayList<Customer> customers, ArrayList<PostalCode> postalCodes) {
 
-		Scanner in = new Scanner(System.in);
-		id++;
+		String uchoice = "y";
 
-		System.out.println("Enter the customer's first name: ");
-		String fName = in.nextLine();
-		while (fName.contains(" ")) {
+		while (uchoice.equals("y")) {
+			Scanner in = new Scanner(System.in);
+			id++;
 
-			System.out.println("Please input the customer's first name only. Try again.");
-			fName = in.nextLine();
+			System.out.println("Enter the customer's first name: ");
+			String fName = in.nextLine();
+			while (fName.contains(" ")) {
 
+				System.out.println("Please input the customer's first name only. Try again.");
+				fName = in.nextLine();
+
+			}
+			System.out.println("Enter the customer's last name: ");
+			String lName = in.nextLine();
+			while (lName.contains(" ")) {
+
+				System.out.println("Please input the customer's last name only. Try again.");
+				lName = in.nextLine();
+
+			}
+
+			System.out.println("Enter where the customer's city.");
+			String place = in.nextLine();
+
+			System.out.println("Enter the customer's postal code.");
+			String pCode = in.nextLine();
+			while (!validatePostal(pCode, postalCodes)) {
+
+				System.out.println("Invalid postal code, please try again.");
+				pCode = in.nextLine();
+
+			}
+			System.out.println("Enter the customer's credit card number.");
+			String cc = in.nextLine();
+
+			while (!validateCCN(cc)) {
+
+				System.out.println("Invalid credit card number, try again.");
+				cc = in.nextLine();
+
+			}
+
+			customers.add(new Customer(fName, lName, place, pCode, Long.parseLong(cc), id));
+
+			System.out.println("Would you like to input another customer? (y)es or (n)o");
+			uchoice = in.nextLine();
 		}
-		System.out.println("Enter the customer's last name: ");
-		String lName = in.nextLine();
-		while (lName.contains(" ")) {
-
-			System.out.println("Please input the customer's last name only. Try again.");
-			lName = in.nextLine();
-
-		}
-
-		System.out.println("Enter where the customer's city.");
-		String place = in.nextLine();
-
-		System.out.println("Enter the customer's postal code.");
-		String pCode = in.nextLine();
-		while (!validatePostal(pCode, postalCodes)) {
-
-			System.out.println("Invalid postal code, please try again.");
-			pCode = in.nextLine();
-
-		}
-		System.out.println("Enter the customer's credit card number.");
-		String cc = in.nextLine();
-
-		while (!validateCCN(cc)) {
-
-			System.out.println("Invalid credit card number, try again.");
-			cc = in.nextLine();
-
-		}
-
-		customers.add(new Customer(fName, lName, place, pCode, Long.parseLong(cc), id));
-
 	}
 
 	private static boolean validatePostal(String pCode, ArrayList<PostalCode> postalCodes) {
