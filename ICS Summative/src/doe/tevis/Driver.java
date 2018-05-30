@@ -14,7 +14,8 @@ public class Driver {
 	private static int id;
 
 	public static void main(String[] args) {
-		// Arraylists to hold Customers, the Postalcode data, and the sales data.
+		// Arraylists to hold Customers, the Postalcode data, and the sales
+		// data.
 		ArrayList<Customer> customers = new ArrayList<>();
 		ArrayList<PostalCode> postalCodes = new ArrayList<>();
 		ArrayList<Sale> sales = new ArrayList<>();
@@ -52,8 +53,19 @@ public class Driver {
 					System.out.println("Sales data tends to follow Benford's law, unlikely that there is fraud.");
 
 				} else {
+					// For the when the user hasn't provided sales data yet.
+					if (sales.size() == 0) {
 
-					System.out.println("Sales data doesn't follow Benford's law, fraudulence is likely.");
+						System.out.println("Please input sales data first.");
+
+					}
+					// For when the sales data simply doesn't follow Benford's
+					// law.
+					else {
+
+						System.out.println("Sales data doesn't follow Benford's law, fraudulence is likely.");
+
+					}
 
 				}
 				// Exit the program.
@@ -78,9 +90,97 @@ public class Driver {
 	 * @return Boolean on whether the sales data follows Benford's law.
 	 */
 	private static boolean benfordCheck(ArrayList<Sale> sales) {
+		// Make sure the sale data is actually loaded.
+		if (sales.size() != 0) {
+			// Array to hold the number of times a digit occurs.
+			double[] fdigits = new double[9];
+			// For loop running through the sales data.
+			for (int i = 0; i < sales.size(); i++) {
+				// Check each first digit of sales, and add to array
+				// depending on the first digit.
+				if (sales.get(i).firstDigit() == 1) {
+
+					fdigits[0]++;
+
+				} else if (sales.get(i).firstDigit() == 2) {
+
+					fdigits[1]++;
+
+				} else if (sales.get(i).firstDigit() == 3) {
+
+					fdigits[2]++;
+
+				} else if (sales.get(i).firstDigit() == 4) {
+
+					fdigits[3]++;
+
+				} else if (sales.get(i).firstDigit() == 5) {
+
+					fdigits[4]++;
+
+				} else if (sales.get(i).firstDigit() == 6) {
+
+					fdigits[5]++;
+
+				} else if (sales.get(i).firstDigit() == 7) {
+
+					fdigits[6]++;
+
+				} else if (sales.get(i).firstDigit() == 8) {
+
+					fdigits[7]++;
+
+				} else if (sales.get(i).firstDigit() == 9) {
+
+					fdigits[8]++;
+
+				}
+
+			}
+
+			System.out.println("Percentage of times each leading digit comes up: ");
+
+			double[] percentage = new double[9];
+			// Calculate the percentage of each first digit occurrence.
+			for (int i = 0; i < fdigits.length; i++) {
+
+				percentage[i] = fdigits[i] / sales.size() * 100;
+
+				System.out.print(i + 1 + ": ");
+				System.out.format("%.2f%n", percentage[i]);
+
+			}
+
+			int follows = 0;
+			// Check if the percentage n digit is greater than the percentage
+			// of the digit n+1.
+			for (int i = 0; i < percentage.length - 1; i++) {
+
+				if (percentage[i] > percentage[i + 1]) {
+
+					follows++;
+
+				}
+
+			}
+			// If the previous for loop verifies as true every time,
+			// meaning the percentage of digits is in descending order,
+			// then return true.
+			// If not, return false.
+			if (follows >= 7) {
+
+				return true;
+
+			}
+
+			else {
+
+				return false;
+
+			}
+		}
 
 		return false;
-
 	}
 
 	/**
@@ -181,8 +281,10 @@ public class Driver {
 			while (in.hasNextLine()) {
 
 				hold = in.nextLine();
-				// The file splits data using the symbol |, however that is a special character.
-				// In order to make sure the program reads the file correctly, two backslashes
+				// The file splits data using the symbol |, however that is a
+				// special character.
+				// In order to make sure the program reads the file correctly,
+				// two backslashes
 				// are needed to split the data.
 				data = hold.split("\\|");
 				// Input data in the order of:
@@ -219,7 +321,8 @@ public class Driver {
 			// Gather the first name of the customer.
 			System.out.println("Enter the customer's first name: ");
 			String fName = in.nextLine();
-			// Make sure the user inputs only the first name by disallowing spaces.
+			// Make sure the user inputs only the first name by disallowing
+			// spaces.
 			while (fName.contains(" ")) {
 
 				System.out.println("Please input the customer's first name only. Try again.");
@@ -285,7 +388,8 @@ public class Driver {
 			for (int i = 0; i < postalCodes.size(); i++) {
 				// Compare user inputed postal code to current code in ArrayList
 				if (postalCodes.get(i).validateCode(compareCode)) {
-					// As soon as one of the codes is compared to be true, then exit the method and
+					// As soon as one of the codes is compared to be true, then
+					// exit the method and
 					// return true.
 					return true;
 
@@ -311,10 +415,11 @@ public class Driver {
 		// Array and ArrayList to hold numbers.
 		int[] reverse = new int[cc.length()];
 		ArrayList<Integer> evens = new ArrayList<>();
-		// InputMistmatchException handling in case the user put any letters into the
+		// InputMistmatchException handling in case the user put any letters
+		// into the
 		// credit card number.
 		try {
-			//Make sure the number isn't negative.
+			// Make sure the number isn't negative.
 			if (Integer.parseInt(cc) >= 0) {
 				// Reverse the credit card number.
 				for (int i = cc.length() - 1; i >= 0; i--) {
@@ -326,14 +431,16 @@ public class Driver {
 				int sum1 = 0;
 				// Run through the credit card number.
 				for (int i = 0; i < reverse.length; i++) {
-					// If the index of the for list is even, add the current number to
+					// If the index of the for list is even, add the current
+					// number to
 					// sum1.
 					if ((i % 2) == 0) {
 
 						sum1 += reverse[i];
 
 					}
-					// Otherwise, add the number multiplied by two to the evens ArrayList.
+					// Otherwise, add the number multiplied by two to the evens
+					// ArrayList.
 					else if ((i % 2) != 0) {
 
 						evens.add(reverse[i] * 2);
@@ -345,7 +452,8 @@ public class Driver {
 				int sum2 = 0;
 				// Run through the evens ArrayList.
 				for (int i = 0; i < evens.size(); i++) {
-					// If the number is above ten, add 1 to the last number in the element and add
+					// If the number is above ten, add 1 to the last number in
+					// the element and add
 					// that to sum2.
 					if (evens.get(i) >= 10) {
 
@@ -360,7 +468,8 @@ public class Driver {
 					}
 
 				}
-				// If the sum of sum1 and sum 2 has a remainder of 0 when divided by 10, and the
+				// If the sum of sum1 and sum 2 has a remainder of 0 when
+				// divided by 10, and the
 				// sum of them aren't zero, then return true.
 				if ((sum1 + sum2) % 10 == 0 && sum1 + sum2 != 0) {
 
@@ -370,7 +479,7 @@ public class Driver {
 				// Otherwise return false.
 				return false;
 			}
-			
+
 			return false;
 
 		} catch (InputMismatchException e) {
