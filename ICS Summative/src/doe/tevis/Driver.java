@@ -10,7 +10,7 @@ import java.io.*;
  *
  */
 public class Driver {
-	// unique id for every single customer inputted.
+	// unique id for every single customer inputed.
 	private static int id;
 
 	public static void main(String[] args) {
@@ -83,7 +83,7 @@ public class Driver {
 	}
 
 	/**
-	 * Method to check if the inputted sales data follows Benford's law.
+	 * Method to check if the inputed sales data follows Benford's law.
 	 * 
 	 * @param sales
 	 *            ArrayList that contains the sale data.
