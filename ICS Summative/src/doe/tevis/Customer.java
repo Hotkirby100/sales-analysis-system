@@ -1,5 +1,9 @@
 package doe.tevis;
-
+/**
+ * Class to hold user inputed customer data.
+ * @author Tevis Doe
+ *
+ */
 public class Customer {
 	// Strings, long, and int to hold customer data.
 	private String fName;
