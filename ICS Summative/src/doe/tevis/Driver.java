@@ -56,7 +56,7 @@ public class Driver {
 					// For the when the user hasn't provided sales data yet.
 					if (sales.size() == 0) {
 
-						System.out.println("Please input sales data first.");
+						System.out.println("No sales data loaded!");
 
 					}
 					// For when the sales data simply doesn't follow Benford's
@@ -92,95 +92,32 @@ public class Driver {
 	private static boolean benfordCheck(ArrayList<Sale> sales) {
 		// Make sure the sale data is actually loaded.
 		if (sales.size() != 0) {
-			// Array to hold the number of times a digit occurs.
-			double[] fdigits = new double[9];
+			// Double to hold the number of occurrences of the digit 1.
+			double firstdigit = 0;
 			// For loop running through the sales data.
 			for (int i = 0; i < sales.size(); i++) {
-				// Check each first digit of sales, and add to array
-				// depending on the first digit.
+				// If the first digit of the sales number is one,
+				// add one to the number of occurrences.
 				if (sales.get(i).firstDigit() == 1) {
 
-					fdigits[0]++;
-
-				} else if (sales.get(i).firstDigit() == 2) {
-
-					fdigits[1]++;
-
-				} else if (sales.get(i).firstDigit() == 3) {
-
-					fdigits[2]++;
-
-				} else if (sales.get(i).firstDigit() == 4) {
-
-					fdigits[3]++;
-
-				} else if (sales.get(i).firstDigit() == 5) {
-
-					fdigits[4]++;
-
-				} else if (sales.get(i).firstDigit() == 6) {
-
-					fdigits[5]++;
-
-				} else if (sales.get(i).firstDigit() == 7) {
-
-					fdigits[6]++;
-
-				} else if (sales.get(i).firstDigit() == 8) {
-
-					fdigits[7]++;
-
-				} else if (sales.get(i).firstDigit() == 9) {
-
-					fdigits[8]++;
+					firstdigit++;
 
 				}
 
 			}
-
-			System.out.println("Percentage of times each leading digit comes up: ");
-
-			double[] percentage = new double[9];
-			// Calculate the percentage of each first digit occurrence.
-			for (int i = 0; i < fdigits.length; i++) {
-
-				percentage[i] = fdigits[i] / sales.size() * 100;
-
-				System.out.print(i + 1 + ": ");
-				System.out.format("%.2f%n", percentage[i]);
-
-			}
-
-			int follows = 0;
-			// Check if the percentage n digit is greater than the percentage
-			// of the digit n+1.
-			for (int i = 0; i < percentage.length - 1; i++) {
-
-				if (percentage[i] > percentage[i + 1]) {
-
-					follows++;
-
-				}
-
-			}
-			// If the previous for loop verifies as true every time,
-			// meaning the percentage of digits is in descending order,
-			// then return true.
-			// If not, return false.
-			if (follows >= 7) {
+			// If the number of times the digit 1 appears has a percentage in
+			// between 29 and 30 inclusive, return true, otherwise return false.
+			if ((firstdigit / sales.size()) * 100 >= 29 || (firstdigit / sales.size()) * 100 <= 32) {
 
 				return true;
-
 			}
 
-			else {
+			return false;
 
-				return false;
-
-			}
 		}
 
 		return false;
+
 	}
 
 	/**
