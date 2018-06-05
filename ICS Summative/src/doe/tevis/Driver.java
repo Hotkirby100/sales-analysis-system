@@ -19,6 +19,8 @@ public class Driver {
 		ArrayList<Customer> customers = new ArrayList<>();
 		ArrayList<PostalCode> postalCodes = new ArrayList<>();
 		ArrayList<Sale> sales = new ArrayList<>();
+		//load the sales data.
+		inputSales(sales);
 		// load the postal codes from the file into the program.
 		loadCodes(postalCodes);
 
@@ -30,7 +32,7 @@ public class Driver {
 		// wishes to exit.
 		while (!uchoice.equals("5")) {
 			System.out.println(
-					"Sales Analysis System\n1. Input Customer Info\n2. Generate Customer Data File\n3. Sales Report\n4. Check for Fraud\n5. Quit");
+					"\nSales Analysis System\n1. Input Customer Info\n2. Generate Customer Data File\n3. Sales Report\n4. Check for Fraud\n5. Quit");
 			System.out.println("Enter your option now:");
 			uchoice = in.nextLine();
 			// Input a new customer.
@@ -41,10 +43,10 @@ public class Driver {
 			} else if (uchoice.equals("2")) {
 
 				generateCustomerFile(customers);
-				// Gather data from a provided sales file.
+			// Print out total sales.
 			} else if (uchoice.equals("3")) {
-
-				inputSales(sales);
+				
+				System.out.println("Total amount of sales: $" + displaySales(sales) );
 				// Check the sales data vs. Benford's law.
 			} else if (uchoice.equals("4")) {
 
@@ -82,6 +84,21 @@ public class Driver {
 
 	}
 
+	private static long displaySales(ArrayList<Sale> sales) {
+		
+		long sale = 0;
+		
+		for (int i = 0 ; i < sales.size() ; i++) {
+			
+			sale += sales.get(i).getSales();
+			
+		}
+		
+		return sale;
+		
+		
+	}
+
 	/**
 	 * Method to check if the inputed sales data follows Benford's law.
 	 * 
@@ -92,22 +109,68 @@ public class Driver {
 	private static boolean benfordCheck(ArrayList<Sale> sales) {
 		// Make sure the sale data is actually loaded.
 		if (sales.size() != 0) {
-			// Double to hold the number of occurrences of the digit 1.
-			double firstdigit = 0;
+			// Array to hold the number of times a digit occurs.
+			double[] fdigits = new double[9];
 			// For loop running through the sales data.
 			for (int i = 0; i < sales.size(); i++) {
-				// If the first digit of the sales number is one,
-				// add one to the number of occurrences.
+				// Check each first digit of sales, and add to array
+				// depending on the first digit.
 				if (sales.get(i).firstDigit() == 1) {
 
-					firstdigit++;
+					fdigits[0]++;
+
+				} else if (sales.get(i).firstDigit() == 2) {
+
+					fdigits[1]++;
+
+				} else if (sales.get(i).firstDigit() == 3) {
+
+					fdigits[2]++;
+
+				} else if (sales.get(i).firstDigit() == 4) {
+
+					fdigits[3]++;
+
+				} else if (sales.get(i).firstDigit() == 5) {
+
+					fdigits[4]++;
+
+				} else if (sales.get(i).firstDigit() == 6) {
+
+					fdigits[5]++;
+
+				} else if (sales.get(i).firstDigit() == 7) {
+
+					fdigits[6]++;
+
+				} else if (sales.get(i).firstDigit() == 8) {
+
+					fdigits[7]++;
+
+				} else if (sales.get(i).firstDigit() == 9) {
+
+					fdigits[8]++;
 
 				}
 
 			}
+
+			System.out.println("Percentage of times each leading digit comes up: ");
+
+			double[] percentage = new double[9];
+			// Calculate the percentage of each first digit occurrence.
+			for (int i = 0; i < fdigits.length; i++) {
+
+				percentage[i] = fdigits[i] / sales.size() * 100;
+
+				System.out.print(i + 1 + ": ");
+				System.out.format("%.2f%n", percentage[i]);
+				
+
+			}
 			// If the number of times the digit 1 appears has a percentage in
 			// between 29 and 30 inclusive, return true, otherwise return false.
-			if ((firstdigit / sales.size()) * 100 >= 29 || (firstdigit / sales.size()) * 100 <= 32) {
+			if ((fdigits[0] / sales.size()) * 100 >= 29 || (fdigits[0] / sales.size()) * 100 <= 32) {
 
 				return true;
 			}
@@ -147,7 +210,6 @@ public class Driver {
 				sales.add(new Sale(data[0], Long.parseLong(data[1])));
 
 			}
-			System.out.println("Sucessfully loaded sales file.");
 
 		} catch (FileNotFoundException e) {
 			// Error message.
