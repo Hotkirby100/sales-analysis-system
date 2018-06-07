@@ -46,13 +46,13 @@ public class Driver {
 			// Print out total sales.
 			} else if (uchoice.equals("3")) {
 				
-				System.out.println("Total amount of sales: $" + displaySales(sales) );
+				System.out.println("Total amount of sales: " + displaySales(sales) + " sales." );
 				// Check the sales data vs. Benford's law.
 			} else if (uchoice.equals("4")) {
 
 				if (benfordCheck(sales) == true) {
 
-					System.out.println("Sales data tends to follow Benford's law, unlikely that there is fraud.");
+					System.out.println("First digit occurance in between 29% and 32%, unlikely that there is fraud.");
 
 				} else {
 					// For the when the user hasn't provided sales data yet.
@@ -65,14 +65,14 @@ public class Driver {
 					// law.
 					else {
 
-						System.out.println("Sales data doesn't follow Benford's law, fraudulence is likely.");
+						System.out.println("First digit occurance outside of 29% to 32%, fraudulence is likely.");
 
 					}
 
 				}
 				// Exit the program.
 			} else if (uchoice.equals("5")) {
-
+				in.close();
 				System.out.println("Program exiting...");
 				// Error handling for invalid choice.
 			} else {
@@ -190,7 +190,7 @@ public class Driver {
 	 *            ArrayList to contain the sales data.
 	 */
 	private static void inputSales(ArrayList<Sale> sales) {
-		// New file taking data frome sales.csv in the root folder.
+		// New file taking data from sales.csv in the root folder.
 		File pFile = new File("sales.csv");
 		// Error handling for FileNotFoundException.
 		try {
@@ -210,6 +210,7 @@ public class Driver {
 				sales.add(new Sale(data[0], Long.parseLong(data[1])));
 
 			}
+			in.close();
 
 		} catch (FileNotFoundException e) {
 			// Error message.
@@ -250,7 +251,7 @@ public class Driver {
 
 			writeFile.close();
 			System.out.println("Sucessfully wrote to file!");
-
+			in.close();
 		} catch (IOException e) {
 
 			System.out.println(e.getMessage());
