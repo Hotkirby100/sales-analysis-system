@@ -19,7 +19,7 @@ public class Driver {
 		ArrayList<Customer> customers = new ArrayList<>();
 		ArrayList<PostalCode> postalCodes = new ArrayList<>();
 		ArrayList<Sale> sales = new ArrayList<>();
-		//load the sales data.
+		// load the sales data.
 		inputSales(sales);
 		// load the postal codes from the file into the program.
 		loadCodes(postalCodes);
@@ -43,10 +43,10 @@ public class Driver {
 			} else if (uchoice.equals("2")) {
 
 				generateCustomerFile(customers);
-			// Print out total sales.
+				// Print out total sales.
 			} else if (uchoice.equals("3")) {
-				
-				System.out.println("Total amount of sales: " + displaySales(sales) + " sales." );
+
+				System.out.println("Total amount of sales: " + displaySales(sales) + " sales.");
 				// Check the sales data vs. Benford's law.
 			} else if (uchoice.equals("4")) {
 
@@ -72,7 +72,7 @@ public class Driver {
 				}
 				// Exit the program.
 			} else if (uchoice.equals("5")) {
-				in.close();
+
 				System.out.println("Program exiting...");
 				// Error handling for invalid choice.
 			} else {
@@ -85,18 +85,17 @@ public class Driver {
 	}
 
 	private static long displaySales(ArrayList<Sale> sales) {
-		
+
 		long sale = 0;
-		
-		for (int i = 0 ; i < sales.size() ; i++) {
-			
+
+		for (int i = 0; i < sales.size(); i++) {
+
 			sale += sales.get(i).getSales();
-			
+
 		}
-		
+
 		return sale;
-		
-		
+
 	}
 
 	/**
@@ -165,7 +164,6 @@ public class Driver {
 
 				System.out.print(i + 1 + ": ");
 				System.out.format("%.2f%n", percentage[i]);
-				
 
 			}
 			// If the number of times the digit 1 appears has a percentage in
@@ -195,22 +193,21 @@ public class Driver {
 		// Error handling for FileNotFoundException.
 		try {
 			// Scanner to read data from the file.
-			Scanner in = new Scanner(pFile);
+			Scanner input = new Scanner(pFile);
 			String data[];
 			String hold;
 			// Skip header.
-			in.nextLine();
+			input.nextLine();
 			// While loop to run through the entire file.
-			while (in.hasNextLine()) {
+			while (input.hasNextLine()) {
 				// Take the next line of the data.
-				hold = in.nextLine();
+				hold = input.nextLine();
 				// Split the data via a comma.
 				data = hold.split(",");
 				// Input the sales data into the sales ArrayList.
 				sales.add(new Sale(data[0], Long.parseLong(data[1])));
 
 			}
-			in.close();
 
 		} catch (FileNotFoundException e) {
 			// Error message.
@@ -227,10 +224,10 @@ public class Driver {
 	 */
 	private static void generateCustomerFile(ArrayList<Customer> customers) {
 
-		Scanner in = new Scanner(System.in);
+		Scanner input = new Scanner(System.in);
 		// Get file name and path from user.
 		System.out.println("Enter the path and name of the output file: (Ex. f:\\\\output.txt)");
-		String fileName = in.nextLine();
+		String fileName = input.nextLine();
 		// Create a file based on this name.
 		File outFile = new File(fileName);
 		// Error handling for IOException.
@@ -251,7 +248,7 @@ public class Driver {
 
 			writeFile.close();
 			System.out.println("Sucessfully wrote to file!");
-			in.close();
+
 		} catch (IOException e) {
 
 			System.out.println(e.getMessage());
@@ -272,15 +269,15 @@ public class Driver {
 		// FileNotFoundException handling.
 		try {
 			// The rest of this is similar to the reading of the sales data.
-			Scanner in = new Scanner(pFile);
+			Scanner input = new Scanner(pFile);
 			String data[];
 			String hold;
 
-			in.nextLine();
+			input.nextLine();
 
-			while (in.hasNextLine()) {
+			while (input.hasNextLine()) {
 
-				hold = in.nextLine();
+				hold = input.nextLine();
 				// The file splits data using the symbol |, however that is a
 				// special character.
 				// In order to make sure the program reads the file correctly,
@@ -482,7 +479,7 @@ public class Driver {
 
 			return false;
 
-		} catch (InputMismatchException e) {
+		} catch (NumberFormatException e) {
 
 			return false;
 
